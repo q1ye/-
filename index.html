@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园商城 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            background-color: #f5f7fa;
+            color: #333;
+            padding-top: 70px;
+        }
+
+        /*  搜索条样式  */
+        .search-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #2d8cf0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar.fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-item a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 24px;
+            padding: 0 20px;
+            width: 450px;
+            height: 42px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            padding: 0 10px;
+        }
+
+        .search-btn {
+            border: none;
+            background: none;
+            color: #2d8cf0;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .search-btn:hover {
+            color: #1976d2;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .publish-btn {
+            background-color: #ff7d00;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .publish-btn:hover {
+            background-color: #e67200;
+            transform: scale(1.05);
+        }
+
+        .login-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .login-link:hover {
+            color: #e6f7ff;
+        }
+
+        /*轮播图模块*/
+        .carousel {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+
+        /* --- 侧边栏布局 --- */
+        .page-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .sidebar-module {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-module:hover {
+            transform: translateY(-5px);
+        }
+
+        .module-title {
+            font-size: 18px;
+            color: #2d8cf0;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8f4ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .module-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-item {
+            margin-bottom: 15px;
+        }
+
+        .toc-link {
+            text-decoration: none;
+            color: #34495e;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .toc-link:hover {
+            color: #2d8cf0;
+            background-color: #f0f7ff;
+            padding-left: 15px;
+        }
+
+        .toc-link.active {
+            color: #2d8cf0;
+            background-color: #e8f4ff;
+            border-left: 3px solid #2d8cf0;
+            padding-left: 15px;
+        }
+
+        .category-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .category-item a {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            color: #34495e;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .category-item a:hover {
+            background-color: #e8f4ff;
+            color: #2d8cf0;
+            transform: scale(1.03);
+        }
+
+        .hot-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #fef7fb;
+            color: #e63946;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .user-info {
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid #e8f4ff;
+            margin: 0 auto 15px;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .user-signature {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d8cf0;
+            margin-bottom: 3px;
+        }
+
+        .stat-text {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        /* --- 内容 --- */
+        .content {
+            flex: 1;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .content-title {
+            font-size: 22px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .filter-btn {
+            background-color: #f8f9fa;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #34495e;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: #2d8cf0;
+            color: #fff;
+        }
+
+        
+        .content h2 {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            position: relative;
+            font-size: 20px;
+            color: #2c3e50;
+        }
+
+        .content h2::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: #e6e6e6;
+            position: absolute;
+            left: 0;
+            bottom: -15px;
+        }
+
+        /* 商品列表 */
+        .goods-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .goods-item {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .goods-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .goods-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .goods-info {
+            padding: 15px;
+        }
+
+        .goods-name {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .goods-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e63946;
+            margin-bottom: 5px;
+        }
+
+        .goods-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .content p {
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        .content p img {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .content p img:hover {
+            transform: scale(1.03);
+        }
+
+        .content p a {
+            margin-left: 20px;
+            text-decoration: none;
+        }
+
+        .recommend-section {
+            margin-top: 40px;
+        }
+
+        .recommend-list {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .recommend-item {
+            min-width: 180px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .recommend-item:hover {
+            background-color: #e8f4ff;
+            transform: translateY(-3px);
+        }
+
+        .recommend-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 6px;
+            margin: 0 auto 10px;
+            object-fit: cover;
+        }
+
+        .recommend-name {
+            font-size: 14px;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .recommend-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #e63946;
+        }
+
+        /* --- 页脚 --- */
+        .footer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #34495e;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* --- 响应式适配--- */
+        @media (max-width: 900px) {
+            .page-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: 0;
+                margin-top: 0;
+            }
+
+            .toc-container {
+                position: static;
+                max-height: none;
+                margin-bottom: 20px;
+            }
+
+            .content {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .search-container {
+                width: 300px;
+            }
+
+            .nav-list {
+                gap: 15px;
+            }
+
+            .goods-list {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .search-bar {
+                padding: 0 15px;
+                height: 65px;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .nav-list {
+                display: none;
+            }
+
+            .search-container {
+                width: 200px;
+            }
+
+            .user-actions {
+                gap: 15px;
+            }
+
+            .publish-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            .carousel-img {
+                height: 200px;
+            }
+
+            .goods-list {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+
+            .goods-img {
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 搜索条 -->
+    <div class="search-bar" id="searchBar">
+        <a href="index.html" class="logo">
+            <img src="https://img.icons8.com/fluency/96/000000/student-center.png" alt="logo" class="logo-img">
+            <span class="logo-text">校园二手交易平台</span>
+        </a>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html" class="active">首页</a></li>
+            <li class="nav-item"><a href="goods-detail.html">商品详情</a></li>
+            <li class="nav-item"><a href="publish.html">发布商品</a></li>
+            <li class="nav-item"><a href="#">关于我们</a></li>
+        </ul>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="搜索商品、分类、用户...">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="user-actions">
+            <button class="publish-btn">发布商品</button>
+            <a href="#" class="login-link">登录/注册</a>
+        </div>
+    </div>
+
+    <!-- 轮播图 -->
+    <div class="carousel">
+        <img src="https://picsum.photos/id/26/1200/320" alt="校园二手交易banner" class="carousel-img">
+    </div>
+
+    <div class="page-container">
+        <div class="sidebar">
+            <!-- 分类导航模块 -->
+            <div class="sidebar-module">
+                <div class="toc-container">
+                    <h3 class="module-title">
+                        <img src="https://img.icons8.com/fluency/96/000000/categorize.png" alt="分类" class="module-icon">
+                        商品分类
+                    </h3>
+                    <ul class="toc-list">
+                        <li class="toc-item"><a href="#section1" class="toc-link active">1. 食品零食</a></li>
+                        <li class="toc-item"><a href="#section2" class="toc-link">2. 日用百货</a></li>
+                        <li class="toc-item"><a href="#section3" class="toc-link">3. 男装服饰</a></li>
+                        <li class="toc-item"><a href="#section4" class="toc-link">4. 女装服饰</a></li>
+                        <li class="toc-item"><a href="#section5" class="toc-link">5. 医药健康</a></li>
+                        <li class="toc-item"><a href="#section6" class="toc-link">6. 学习资料</a></li>
+                        <li class="toc-item"><a href="#section7" class="toc-link">7. 电子产品</a></li>
+                        <li class="toc-item"><a href="#section8" class="toc-link">8. 运动器材</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 热门标签模块 -->
+            <div class="sidebar-module">
+                <h3 class="module-title">
+                    <img src="https://img.icons8.com/fluency/96/000000/tags.png" alt="热门标签" class="module-icon">
+                    热门标签
+                </h3>
+                <ul class="category-list">
+                    <li class="category-item"><a href="#">全新未拆封</a></li>
+                    <li class="category-item"><a href="#">九成新</a></li>
+                    <li class="category-item"><a href="#">价格可议</a></li>
+                    <li class="category-item"><a href="#">校内自提</a></li>
+                    <li class="category-item"><a href="#">包邮</a></li>
+                    <li class="category-item"><a href="#">学霸笔记</a></li>
+                    <li class="category-item"><a href="#">考研资料</a></li>
+                    <li class="category-item"><a href="#">电子产品</a></li>
+                </ul>
+            </div>
+
+            <!-- 用户信息模块 -->
+            <div class="sidebar-module">
+                <h3 class="module-title">
+                    <img src="https://img.icons8.com/fluency/96/000000/user.png" alt="用户中心" class="module-icon">
+                    用户中心
+                </h3>
+                <div class="user-info">
+                    <img src="https://picsum.photos/id/64/200/200" alt="用户头像" class="user-avatar">
+                    <div class="user-name">校园卖家</div>
+                    <div class="user-signature">诚信交易，互利共赢</div>
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <div class="stat-num">28</div>
+                            <div class="stat-text">已售商品</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">99%</div>
+                            <div class="stat-text">好评率</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-num">156</div>
+                            <div class="stat-text">粉丝数</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content-header">
+                <h1 class="content-title">热门商品推荐</h1>
+                <div class="filter-options">
+                    <button class="filter-btn active">默认排序</button>
+                    <button class="filter-btn">价格从低到高</button>
+                    <button class="filter-btn">价格从高到低</button>
+                    <button class="filter-btn">最新发布</button>
+                </div>
+            </div>
+
+            <h2 id="section1">1. 食品零食</h2>
+            <div class="goods-list">
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://img.alicdn.com/imgextra/i4/3375112900/O1CN01tUfsHt1XIFfzVQ9tw_!!3375112900-0-alimamacc.jpg" alt="零食大礼包" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">进口零食大礼包 全新未拆封 多种口味组合</div>
+                        <div class="goods-price">¥45.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>2小时前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/292/300/300" alt="咖啡" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">蓝山风味咖啡 20包 全新未开封 提神醒脑</div>
+                        <div class="goods-price">¥32.00</div>
+                        <div class="goods-meta">
+                            <span>支持包邮</span>
+                            <span>1天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/431/300/300" alt="坚果" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">混合坚果礼盒 500g 九成新 保质期到明年</div>
+                        <div class="goods-price">¥58.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>3天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/488/300/300" alt="巧克力" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">进口黑巧克力 80g 全新 高纯度无添加</div>
+                        <div class="goods-price">¥25.00</div>
+                        <div class="goods-meta">
+                            <span>价格可议</span>
+                            <span>5天前发布</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <h2 id="section2">2. 日用百货</h2>
+            <div class="goods-list">
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/163/300/300" alt="保温杯" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">不锈钢保温杯 500ml 九成新 保温效果好</div>
+                        <div class="goods-price">¥35.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>2天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/225/300/300" alt="台灯" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">LED护眼台灯 三档调节 九成新 USB充电</div>
+                        <div class="goods-price">¥68.00</div>
+                        <div class="goods-meta">
+                            <span>支持包邮</span>
+                            <span>4天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/306/300/300" alt="收纳盒" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">抽屉收纳盒 3个装 全新 可叠加使用</div>
+                        <div class="goods-price">¥28.00</div>
+                        <div class="goods-meta">
+                            <span>价格可议</span>
+                            <span>1周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/324/300/300" alt="雨伞" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">全自动雨伞 加大加固 全新 晴雨两用</div>
+                        <div class="goods-price">¥42.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>1周前发布</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <h2 id="section3">3. 男装服饰</h2>
+            <div class="goods-list">
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1005/300/300" alt="卫衣" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">纯棉卫衣 黑色 L码 九成新 无污渍</div>
+                        <div class="goods-price">¥55.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>3天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1011/300/300" alt="牛仔裤" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">修身牛仔裤 蓝色 32码 八成新 版型好</div>
+                        <div class="goods-price">¥48.00</div>
+                        <div class="goods-meta">
+                            <span>价格可议</span>
+                            <span>5天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1025/300/300" alt="外套" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">休闲夹克 灰色 M码 全新 带吊牌</div>
+                        <div class="goods-price">¥128.00</div>
+                        <div class="goods-meta">
+                            <span>支持包邮</span>
+                            <span>1周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1074/300/300" alt="运动鞋" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">跑步鞋 白色 42码 九成新 无磨损</div>
+                        <div class="goods-price">¥158.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>2周前发布</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <h2 id="section4">4. 女装服饰</h2>
+            <div class="goods-list">
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1027/300/300" alt="连衣裙" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">碎花连衣裙 中长款 S码 九成新 气质款</div>
+                        <div class="goods-price">¥78.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>4天前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1062/300/300" alt="毛衣" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">针织毛衣 粉色 M码 全新 软糯舒适</div>
+                        <div class="goods-price">¥65.00</div>
+                        <div class="goods-meta">
+                            <span>价格可议</span>
+                            <span>1周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1082/300/300" alt="风衣" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">长款风衣 卡其色 L码 八成新 百搭款</div>
+                        <div class="goods-price">¥138.00</div>
+                        <div class="goods-meta">
+                            <span>支持包邮</span>
+                            <span>2周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/1112/300/300" alt="帆布鞋" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">帆布鞋 白色 37码 全新 百搭款</div>
+                        <div class="goods-price">¥35.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>3周前发布</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <h2 id="section5">5. 医药健康</h2>
+            <div class="goods-list">
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/237/300/300" alt="口罩" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">KN95口罩 50只装 全新 正规厂家</div>
+                        <div class="goods-price">¥45.00</div>
+                        <div class="goods-meta">
+                            <span>支持包邮</span>
+                            <span>1周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/493/300/300" alt="体温计" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">电子体温计 全新 精准测量 带背光</div>
+                        <div class="goods-price">¥68.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>2周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/588/300/300" alt="创可贴" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">防水创可贴 100片 全新 多种尺寸</div>
+                        <div class="goods-price">¥15.00</div>
+                        <div class="goods-meta">
+                            <span>价格可议</span>
+                            <span>3周前发布</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="goods-detail.html" class="goods-item">
+                    <img src="https://picsum.photos/id/628/300/300" alt="护眼贴" class="goods-img">
+                    <div class="goods-info">
+                        <div class="goods-name">缓解眼疲劳护眼贴 30对 全新 无香精</div>
+                        <div class="goods-price">¥38.00</div>
+                        <div class="goods-meta">
+                            <span>校内自提</span>
+                            <span>1个月前发布</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 推荐模块 -->
+            <div class="recommend-section">
+                <h2>猜你喜欢</h2>
+                <div class="recommend-list">
+                    <div class="recommend-item">
+                        <img src="https://picsum.photos/id/104/200/200" alt="推荐商品" class="recommend-img">
+                        <div class="recommend-name">考研英语真题 2025版</div>
+                        <div class="recommend-price">¥45.00</div>
+                    </div>
+                    <div class="recommend-item">
+                        <img src="https://picsum.photos/id/116/200/200" alt="推荐商品" class="recommend-img">
+                        <div class="recommend-name">无线鼠标 静音款</div>
+                        <div class="recommend-price">¥32.00</div>
+                    </div>
+                    <div class="recommend-item">
+                        <img src="https://picsum.photos/id/129/200/200" alt="推荐商品" class="recommend-img">
+                        <div class="recommend-name">笔记本电脑支架</div>
+                        <div class="recommend-price">¥58.00</div>
+                    </div>
+                    <div class="recommend-item">
+                        <img src="https://picsum.photos/id/137/200/200" alt="推荐商品" class="recommend-img">
+                        <div class="recommend-name">四六级词汇书</div>
+                        <div class="recommend-price">¥25.00</div>
+                    </div>
+                    <div class="recommend-item">
+                        <img src="https://picsum.photos/id/142/200/200" alt="推荐商品" class="recommend-img">
+                        <div class="recommend-name">瑜伽垫 加厚款</div>
+                        <div class="recommend-price">¥78.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>关于平台</h3>
+                <ul class="footer-links">
+                    <li><a href="#">平台简介</a></li>
+                    <li><a href="#">团队成员</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">加入我们</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>帮助中心</h3>
+                <ul class="footer-links">
+                    <li><a href="#">交易指南</a></li>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">投诉举报</a></li>
+                    <li><a href="#">售后服务</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>用户服务</h3>
+                <ul class="footer-links">
+                    <li><a href="#">用户协议</a></li>
+                    <li><a href="#">隐私政策</a></li>
+                    <li><a href="#">安全保障</a></li>
+                    <li><a href="#">退款规则</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>关注我们</h3>
+                <ul class="footer-links">
+                    <li><a href="#">微信公众号</a></li>
+                    <li><a href="#">QQ交流群</a></li>
+                    <li><a href="#">抖音账号</a></li>
+                    <li><a href="#">微博账号</a></li> 
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 校园商城 版权所有 | 江西财经大学软件工程学院 设计开发
+        </div>
+    </div>
+</body>
+</html>

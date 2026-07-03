@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布商品 - 校园商城</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            background-color: #f5f7fa;
+            color: #333;
+            padding-top: 70px;
+        }
+
+        /* 搜索条样式（和首页/详情页完全一致） */
+        .search-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #2d8cf0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar.fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            color: #fff;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-item a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 24px;
+            padding: 0 20px;
+            width: 450px;
+            height: 42px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            padding: 0 10px;
+        }
+
+        .search-btn {
+            border: none;
+            background: none;
+            color: #2d8cf0;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .search-btn:hover {
+            color: #1976d2;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .publish-btn {
+            background-color: #ff7d00;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .publish-btn:hover {
+            background-color: #e67200;
+            transform: scale(1.05);
+        }
+
+        .login-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s ease;
+        }
+
+        .login-link:hover {
+            color: #e6f7ff;
+        }
+
+        /* 发布商品核心布局 */
+        .publish-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .publish-header {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px 30px;
+            margin-bottom: 20px;
+        }
+
+        .publish-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .publish-desc {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        /* 发布表单样式 */
+        .publish-form {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .form-tip {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        /* 输入框/下拉框/文本域样式 */
+        .form-input {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 15px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2d8cf0;
+            box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 15px;
+            color: #333;
+            background-color: #fff;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #2d8cf0;
+            box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 150px;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 15px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+            line-height: 1.6;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2d8cf0;
+            box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.1);
+        }
+
+        /* 图片上传区域 */
+        .upload-area {
+            border: 2px dashed #e6e6e6;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #2d8cf0;
+            background-color: #f8fbff;
+        }
+
+        .upload-icon {
+            font-size: 40px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            font-size: 15px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .upload-note {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .upload-preview {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .preview-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #e6e6e6;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* 单选/多选样式 */
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-item, .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #34495e;
+        }
+
+        .radio-input, .checkbox-input {
+            width: 16px;
+            height: 16px;
+            accent-color: #2d8cf0;
+        }
+
+        /* 提交按钮 */
+        .form-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            background-color: #2d8cf0;
+            color: #fff;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background-color: #f8f9fa;
+            color: #34495e;
+            border: 1px solid #e6e6e6;
+            padding: 12px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .reset-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        /* 页脚（和首页/详情页一致） */
+        .footer {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #34495e;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #34495e;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 600px) {
+            .search-bar {
+                padding: 0 15px;
+                height: 65px;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .nav-list {
+                display: none;
+            }
+
+            .search-container {
+                width: 200px;
+            }
+
+            .user-actions {
+                gap: 15px;
+            }
+
+            .publish-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            .publish-container {
+                padding: 0 15px;
+            }
+
+            .publish-form {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .submit-btn, .reset-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-bar" id="searchBar">
+        <a href="index.html" class="logo">
+            <img src="https://img.icons8.com/fluency/96/000000/student-center.png" alt="logo" class="logo-img">
+            <span class="logo-text">校园商城</span>
+        </a>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html">首页</a></li>
+            <li class="nav-item"><a href="goods-detail.html">商品详情</a></li>
+            <li class="nav-item"><a href="publish.html" class="active">发布商品</a></li>
+            <li class="nav-item"><a href="#">关于我们</a></li>
+        </ul>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="搜索商品、分类、用户...">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="user-actions">
+            <button class="publish-btn">发布商品</button>
+            <a href="#" class="login-link">登录/注册</a>
+        </div>
+    </div>
+
+    <!-- 发布商品核心区域 -->
+    <div class="publish-container">
+        <!-- 发布头部 -->
+        <div class="publish-header">
+            <h1 class="publish-title">📤 发布二手商品</h1>
+            <p class="publish-desc">请完整填写商品信息，信息越详细越容易成交哦！所有信息仅用于校园内交易，平台会保护你的隐私。</p>
+        </div>
+
+        <!-- 发布表单 -->
+        <form class="publish-form" id="publishForm">
+            <!-- 商品分类 -->
+            <div class="form-group">
+                <label class="form-label">商品分类 <span style="color: #e63946;">*</span></label>
+                <select class="form-select" required>
+                    <option value="">请选择商品分类</option>
+                    <option value="1">食品零食</option>
+                    <option value="2">日用百货</option>
+                    <option value="3">男装服饰</option>
+                    <option value="4">女装服饰</option>
+                    <option value="5">医药健康</option>
+                    <option value="6">学习资料</option>
+                    <option value="7">电子产品</option>
+                    <option value="8">运动器材</option>
+                </select>
+                <p class="form-tip">选择正确的分类能让更多同学看到你的商品</p>
+            </div>
+
+            <!-- 商品标题 -->
+            <div class="form-group">
+                <label class="form-label">商品标题 <span style="color: #e63946;">*</span></label>
+                <input type="text" class="form-input" placeholder="例如：进口零食大礼包 全新未拆封 多种口味组合" required>
+                <p class="form-tip">标题建议包含商品名称、新旧程度、核心卖点，不超过30个字</p>
+            </div>
+
+            <!-- 商品价格 -->
+            <div class="form-group">
+                <label class="form-label">商品价格（元） <span style="color: #e63946;">*</span></label>
+                <input type="number" class="form-input" placeholder="请输入商品售价" min="0.01" step="0.01" required>
+                <div class="radio-group" style="margin-top: 10px;">
+                    <div class="radio-item">
+                        <input type="radio" name="priceType" id="priceFixed" class="radio-input" checked>
+                        <label for="priceFixed">一口价</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="priceType" id="priceNegotiable" class="radio-input">
+                        <label for="priceNegotiable">价格可议</label>
+                    </div>
+                </div>
+                <p class="form-tip">建议根据商品新旧程度、市场价格合理定价</p>
+            </div>
+
+            <!-- 原价（选填） -->
+            <div class="form-group">
+                <label class="form-label">商品原价（元）</label>
+                <input type="number" class="form-input" placeholder="选填，填写原价更有说服力" min="0.01" step="0.01">
+                <p class="form-tip">填写原价可让买家更清楚性价比</p>
+            </div>
+
+            <!-- 商品状态 -->
+            <div class="form-group">
+                <label class="form-label">商品状态 <span style="color: #e63946;">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" name="goodsStatus" id="statusNew" class="radio-input" required>
+                        <label for="statusNew">全新未拆封</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="goodsStatus" id="status9" class="radio-input">
+                        <label for="status9">九成新</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="goodsStatus" id="status8" class="radio-input">
+                        <label for="status8">八成新</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="goodsStatus" id="status7" class="radio-input">
+                        <label for="status7">七成新及以下</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 交易方式 -->
+            <div class="form-group">
+                <label class="form-label">交易方式</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="tradeType" id="tradeSelf" class="checkbox-input" checked>
+                        <label for="tradeSelf">校内自提</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="tradeType" id="tradeMail" class="checkbox-input">
+                        <label for="tradeMail">支持包邮</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="tradeType" id="tradeDelivery" class="checkbox-input">
+                        <label for="tradeDelivery">校内配送</label>
+                    </div>
+                </div>
+                <p class="form-tip">可多选，建议优先选择校内自提，当面验货更放心</p>
+            </div>
+
+            <!-- 交易地点 -->
+            <div class="form-group">
+                <label class="form-label">自提地点</label>
+                <input type="text" class="form-input" placeholder="例如：江西财经大学麦庐园校区食堂门口">
+                <p class="form-tip">填写具体的自提地点，方便买家找到你</p>
+            </div>
+
+            <!-- 商品描述 -->
+            <div class="form-group">
+                <label class="form-label">商品详情描述 <span style="color: #e63946;">*</span></label>
+                <textarea class="form-textarea" placeholder="请详细描述商品信息：
+1. 商品品牌、规格、数量
+2. 购买时间、使用情况
+3. 商品优缺点
+4. 交易相关说明
+5. 其他需要说明的事项" required></textarea>
+                <p class="form-tip">详情越详细，成交率越高，建议分段说明，条理清晰</p>
+            </div>
+
+            <!-- 图片上传 -->
+            <div class="form-group">
+                <label class="form-label">商品图片 <span style="color: #e63946;">*</span></label>
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+                    <div class="upload-icon">🖼️</div>
+                    <div class="upload-text">点击或拖拽图片到此处上传</div>
+                    <div class="upload-note">支持JPG/PNG格式，最多上传5张，单张不超过5MB</div>
+                </div>
+                <div class="upload-preview" id="uploadPreview"></div>
+                <p class="form-tip">建议上传商品正面、细节、包装等多角度图片，清晰的图片更吸引人</p>
+            </div>
+
+            <!-- 表单操作按钮 -->
+            <div class="form-actions">
+                <button type="reset" class="reset-btn">重置表单</button>
+                <button type="submit" class="submit-btn">发布商品</button>
+            </div>
+        </form>
+    </div>
+    <div class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>关于平台</h3>
+                <ul class="footer-links">
+                    <li><a href="#">平台简介</a></li>
+                    <li><a href="#">团队成员</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">加入我们</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>帮助中心</h3>
+                <ul class="footer-links">
+                    <li><a href="#">交易指南</a></li>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">投诉举报</a></li>
+                    <li><a href="#">售后服务</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>用户服务</h3>
+                <ul class="footer-links">
+                    <li><a href="#">用户协议</a></li>
+                    <li><a href="#">隐私政策</a></li>
+                    <li><a href="#">安全保障</a></li>
+                    <li><a href="#">退款规则</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>关注我们</h3>
+                <ul class="footer-links">
+                    <li><a href="#">微信公众号</a></li>
+                    <li><a href="#">QQ交流群</a></li>
+                    <li><a href="#">抖音账号</a></li>
+                    <li><a href="#">微博账号</a></li> 
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 校园商城 版权所有 | 江西财经大学软件工程学院 设计开发
+        </div>
+    </div>
+</body>
+</html>
