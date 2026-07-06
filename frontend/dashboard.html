@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>校园二手交易平台 - 首页</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <h1>校园二手交易平台</h1>
+      <div class="header-right">
+        <div class="search-container">
+          <input type="text" id="search-input" placeholder="搜索商品...">
+          <button id="search-btn">搜索</button>
+        </div>
+        <div class="user-info">
+          <span id="username-display"></span>
+          <button id="logout-btn">退出登录</button>
+        </div>
+      </div>
+    </div>
+    <div class="category-bar">
+      <button class="category-btn active" data-category="">全部</button>
+      <button class="category-btn" data-category="电子设备">电子设备</button>
+      <button class="category-btn" data-category="图书教材">图书教材</button>
+      <button class="category-btn" data-category="生活用品">生活用品</button>
+      <button class="category-btn" data-category="运动器材">运动器材</button>
+      <button class="category-btn" data-category="其他">其他</button>
+      <a href="publish.html" class="publish-btn">发布商品</a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="goods-container" class="goods-grid"></div>
+    <div id="admin-panel" class="admin-panel hidden">
+      <h3>管理员操作</h3>
+      <p>管理员可以对违规商品进行强制下架操作</p>
+    </div>
+  </main>
+
+  <script type="module" src="js/goods.js"></script>
+</body>
+</html>
